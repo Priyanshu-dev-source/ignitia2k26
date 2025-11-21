@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link  from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Code, Cpu, Palette } from "lucide-react";
 
@@ -71,11 +72,15 @@ const CompetitionsSection = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button 
+                <Link
+                  href="/competitions"
+                >
+                <Button
                   className="w-full bg-golden text-black hover:bg-golden/90 font-rajdhani font-semibold"
                 >
-                  Enroll Now
+                    Enroll Now
                 </Button>
+                  </Link>
               </CardContent>
             </Card>
           ))}

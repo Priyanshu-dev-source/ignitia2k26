@@ -89,7 +89,19 @@
   border-color: var(--border);
 }
 
+/* Hide scrollbar for Chrome, Safari and Edge */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+html {
+  scrollbar-width: none;
+}
+
+
 body {
+  -ms-overflow-style: none;
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-rajdhani), "Rajdhani", sans-serif;
