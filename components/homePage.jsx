@@ -3,20 +3,31 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
+import AboutSection from "@/components/AboutSeaction";
+import CompetitionsSection from "@/components/CompetitionSection";
+import GallerySection from "@/components/GallerySection";
+import FeedbackSection from "@/components/FeedbackSection";
 
 const HomePage = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    const handleScroll = (e) => {
-      e.preventDefault();
-      
+    const handleScroll = (e)=> {
       const delta = 'deltaY' in e ? e.deltaY : 0;
+      const contentBox = document.querySelector('.expanding-content-box');
+      const isAtTop = contentBox ? contentBox.scrollTop === 0 : true;
       
-      setScrollProgress((prev) => {
-        const newProgress = Math.max(0, Math.min(100, prev + delta * 0.3));
-        return newProgress;
-      });
+      // Allow scrolling back up from expanded state when at top of content
+      if (scrollProgress === 100 && delta < 0 && isAtTop) {
+        e.preventDefault();
+        setScrollProgress((prev) => Math.max(0, prev + delta * 0.3));
+      }
+      // During expansion animation (0-100)
+      else if (scrollProgress < 100) {
+        e.preventDefault();
+        setScrollProgress((prev) => Math.max(0, Math.min(100, prev + delta * 0.3)));
+      }
+      // When fully expanded and scrolling down or not at top, allow normal scroll
     };
 
     window.addEventListener("wheel", handleScroll, { passive: false });
@@ -26,7 +37,7 @@ const HomePage = () => {
       window.removeEventListener("wheel", handleScroll);
       window.removeEventListener("touchmove", handleScroll);
     };
-  }, []);
+  }, [scrollProgress]);
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden bg-black">
@@ -68,9 +79,10 @@ const HomePage = () => {
       >
         <Navbar />
         <div 
-          className="p-8 h-full overflow-y-auto"
+          className="expanding-content-box p-8 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-golden/30 scrollbar-track-background/20"
           style={{
             opacity: scrollProgress > 20 ? 1 : scrollProgress / 20,
+            overflowY: scrollProgress >= 100 ? 'auto' : 'hidden',
           }}
         >
           <h1 className="font-orbitron text-4xl md:text-6xl font-bold text-golden mb-8 text-center">
@@ -83,29 +95,29 @@ const HomePage = () => {
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
-            <div className="p-6 bg-background/50 rounded-lg border-2 border-futuristic-accent/30">
-              <h3 className="font-orbitron text-xl font-bold text-golden mb-3">Technical Events</h3>
+            <div className="p-6 bg-background/50 rounded-lg border-2 border-green-400">
+              <h3 className="font-orbitron text-xl font-bold text-green-400 mb-3">Technical Events</h3>
               <p className="text-white font-rajdhani text-foreground/80">
                 Hackathons, coding competitions, robotics challenges, and tech talks from industry leaders.
               </p>
             </div>
             
-            <div className="p-6 bg-background/50 rounded-lg border-2 border-futuristic-glow/30">
+            <div className="p-6 bg-background/50 rounded-lg border-2 border-futuristic-glow">
               <h3 className="font-orbitron text-xl font-bold text-futuristic-glow mb-3">Cultural Events</h3>
               <p className="text-white font-rajdhani text-foreground/80">
                 Dance, music, drama, fashion shows, and celebrity performances throughout the festival.
               </p>
             </div>
             
-            <div className="p-6 bg-background/50 rounded-lg border-2 border-futuristic-accent/30">
+            <div className="p-6 bg-background/50 rounded-lg border-2 border-futuristic-accent">
               <h3 className="font-orbitron text-xl font-bold text-futuristic-accent mb-3">Workshops</h3>
               <p className=" text-white font-rajdhani text-foreground/80">
                 Hands-on learning sessions covering AI, blockchain, web development, and emerging technologies.
               </p>
             </div>
             
-            <div className="p-6 bg-background/50 rounded-lg border-2 border-golden/30">
-              <h3 className="font-orbitron text-xl font-bold text-golden mb-3">Networking</h3>
+            <div className="p-6 bg-background/50 rounded-lg border-2 border-purple-400">
+              <h3 className="font-orbitron text-xl font-bold text-purple-400 mb-3">Networking</h3>
               <p className=" text-white font-rajdhani text-foreground/80">
                 Connect with industry professionals, startups, and fellow students from across the country.
               </p>
@@ -119,6 +131,10 @@ const HomePage = () => {
               Register Now
             </Button>
           </div>
+          <AboutSection />
+          <CompetitionsSection />
+          <GallerySection />
+          <FeedbackSection />
         </div>
       </div>
     </div>
