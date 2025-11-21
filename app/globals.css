@@ -139,6 +139,31 @@ body {
   to { opacity: 0; transform: scale(0.8); }
 }
 
+/* Custom Keyframes for the Image Slideshow */
+@keyframes imageSlideshow {
+  0% {
+    opacity: 0;
+  } /* Start transparent */
+  10% {
+    opacity: 0.8;
+  } /* Fade in */
+  33.33% {
+    opacity: 0.8;
+  } /* Stay visible */
+  43.33% {
+    opacity: 0;
+  } /* Fade out */
+  100% {
+    opacity: 0;
+  } /* Stay transparent */
+}
+
+.background-slideshow {
+  opacity: 0;
+  animation: imageSlideshow 15s infinite; 
+  animation-fill-mode: both;
+}
+
 .animate-ignitia-intro-text {
   animation:
     ignitia-intro-stroke 5.8s ease-in-out forwards,
